@@ -2,8 +2,8 @@ import { type Server } from 'http';
 import mongoose from 'mongoose';
 import app from './app';
 import config from './config';
-import { connectWithRetry, disconnectDatabase, markSeeded } from './DB';
-import { isSeeded, seedDatabase } from './DB/seed';
+import { disconnectDatabase } from './DB';
+import { ensureRuntimeReady } from './runtime';
 import { logger } from './shared/logger';
 
 process.on('uncaughtException', (error) => {
@@ -16,17 +16,6 @@ process.on('unhandledRejection', (reason) => {
 });
 
 let server: Server | undefined;
-
-async function prepareData() {
-    if (config.auto_seed) {
-        await seedDatabase({ baseUrl: config.public_api_url });
-        markSeeded(true);
-        return;
-    }
-    const seeded = await isSeeded(config.public_api_url);
-    markSeeded(seeded);
-    if (!seeded) logger.warn('Database is not seeded. Run "pnpm db:seed" (data routes return 503 until then).');
-}
 
 async function main() {
     if (config.jwt.using_dev_secrets) {
@@ -44,7 +33,7 @@ async function main() {
     mongoose.connection.on('reconnected', () => logger.info('MongoDB reconnected'));
 
     // The HTTP server starts first so /health responds while the database is still connecting.
-    await connectWithRetry(config.database_url, { onConnected: prepareData });
+    await ensureRuntimeReady();
 }
 
 async function shutdown(signal: string) {

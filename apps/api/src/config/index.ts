@@ -26,12 +26,21 @@ const envSchema = z.object({
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
     HOST: z.string().default('0.0.0.0'),
     PORT: intFromEnv(4000, 1, 65535),
-    PUBLIC_API_URL: z.url().default('http://localhost:4000'),
+    PUBLIC_API_URL: z
+        .url()
+        .default(
+            process.env.VERCEL_PROJECT_PRODUCTION_URL
+                ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+                : process.env.VERCEL_URL
+                  ? `https://${process.env.VERCEL_URL}`
+                  : 'http://localhost:4000',
+        ),
     WEB_URL: z.url().optional(),
     MONGODB_URI: z.string().min(1).default('mongodb://127.0.0.1:27017/mockapis'),
     AUTO_SEED: booleanFromEnv(true),
     CORS_ORIGINS: z.string().default('*'),
-    TRUST_PROXY: z.string().default('false'),
+    // Vercel sits behind one proxy; rate limiting needs the real client IP.
+    TRUST_PROXY: z.string().default(process.env.VERCEL ? '1' : 'false'),
     BODY_LIMIT: z.string().default('100kb'),
     REQUEST_TIMEOUT_MS: intFromEnv(15_000, 6_000, 120_000),
     DEFAULT_PAGE_LIMIT: intFromEnv(PAGINATION.defaultLimit, 1, 1000),

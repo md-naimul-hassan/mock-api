@@ -5,7 +5,7 @@
   "description": "Mock APIs documentation website and API playground (Next.js).",
   "scripts": {
     "dev": "next dev --port 3000",
-    "build": "next build",
+    "build": "pnpm --filter @mockapis/api-spec run build && next build",
     "start": "next start --port 3000",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

@@ -14,6 +14,7 @@ import requireJsonBody from './app/middlewares/requireJsonBody';
 import simulateDelay from './app/middlewares/simulateDelay';
 import { getOpenApiDocument, SystemController } from './app/modules/system/system.controller';
 import router from './app/routes';
+import { startRuntimeInBackground } from './runtime';
 
 export type AppOptions = {
     rateLimit?: Partial<RateLimitOptions>;
@@ -96,4 +97,10 @@ export function createApp(options: AppOptions = {}) {
 }
 
 const app = createApp();
+
+// On Vercel the entrypoint is this module (no server.ts listen loop), so kick off MongoDB here.
+if (process.env.VERCEL) {
+    startRuntimeInBackground();
+}
+
 export default app;

@@ -7,7 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/server.ts",
-    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "build": "pnpm --filter @mockapis/api-spec run build && rimraf dist && tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",

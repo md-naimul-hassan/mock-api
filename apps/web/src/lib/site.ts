@@ -1,10 +1,19 @@
 const trimTrailingSlash = (url: string) => url.replace(/\/+$/, '');
 
-/** Public API origin, e.g. `https://api.example.com`. Configured with NEXT_PUBLIC_API_BASE_URL at build time. */
-export const API_BASE_URL = trimTrailingSlash(process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000');
+const vercelOrigin = () => {
+    const host = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+    return host ? `https://${host}` : '';
+};
+
+/** Public API origin, e.g. `https://api.example.com`. Empty string = same origin (Vercel services). */
+export const API_BASE_URL = trimTrailingSlash(
+    process.env.NEXT_PUBLIC_API_BASE_URL ?? (process.env.VERCEL ? '' : 'http://localhost:4000'),
+);
 
 /** Public URL of this website, used for canonical URLs and the sitemap. */
-export const SITE_URL = trimTrailingSlash(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000');
+export const SITE_URL = trimTrailingSlash(
+    process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL ? vercelOrigin() || 'http://localhost:3000' : 'http://localhost:3000'),
+);
 
 export const API_PREFIX = '/api/v1';
 export const API_ROOT_URL = `${API_BASE_URL}${API_PREFIX}`;
