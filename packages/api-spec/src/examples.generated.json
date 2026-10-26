@@ -1,0 +1,2427 @@
+{
+  "baseUrl": "http://localhost:4000",
+  "endpoints": {
+    "root": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "name": "Mock APIs",
+          "version": "1.0.0",
+          "description": "Free REST APIs for learning, building, and testing. No API key required.",
+          "baseUrl": "http://localhost:4000/api/v1",
+          "documentation": {
+            "openapi": "http://localhost:4000/openapi.json",
+            "swaggerUi": "http://localhost:4000/docs",
+            "website": null
+          },
+          "resources": [
+            {
+              "name": "users",
+              "url": "http://localhost:4000/api/v1/users",
+              "description": "Fictional user profiles with contact details, address, company, and role. Users own posts, todos, comments, carts, and recipes.",
+              "writable": true
+            },
+            {
+              "name": "products",
+              "url": "http://localhost:4000/api/v1/products",
+              "description": "A fictional product catalog across categories with pricing, discounts, ratings, and stock levels.",
+              "writable": true
+            },
+            {
+              "name": "posts",
+              "url": "http://localhost:4000/api/v1/posts",
+              "description": "Short blog-style posts written by seeded users, with tags, reactions, and view counts.",
+              "writable": true
+            },
+            {
+              "name": "comments",
+              "url": "http://localhost:4000/api/v1/comments",
+              "description": "Comments left by users on posts. Every comment references an existing post and user.",
+              "writable": true
+            },
+            {
+              "name": "todos",
+              "url": "http://localhost:4000/api/v1/todos",
+              "description": "Simple to-do items that belong to users. Ideal for practicing list rendering and toggling state.",
+              "writable": true
+            },
+            {
+              "name": "carts",
+              "url": "http://localhost:4000/api/v1/carts",
+              "description": "Shopping carts that reference seeded users and products, with computed totals and discounts.",
+              "writable": false
+            },
+            {
+              "name": "recipes",
+              "url": "http://localhost:4000/api/v1/recipes",
+              "description": "Recipes with ingredients, step-by-step instructions, timings, and nutrition information.",
+              "writable": false
+            },
+            {
+              "name": "quotes",
+              "url": "http://localhost:4000/api/v1/quotes",
+              "description": "Original, fictional quotes with fictional authors. Read-only.",
+              "writable": false
+            }
+          ],
+          "authentication": {
+            "login": "http://localhost:4000/api/v1/auth/login",
+            "note": "Demo-only authentication for practice. Never use it to secure real applications."
+          },
+          "testing": {
+            "echo": "http://localhost:4000/api/v1/test/echo",
+            "delay": "http://localhost:4000/api/v1/test/delay?ms=1000",
+            "status": "http://localhost:4000/api/v1/test/status/404"
+          },
+          "limits": {
+            "defaultPageSize": 30,
+            "maxPageSize": 100,
+            "maxDelayMs": 5000,
+            "rateLimit": {
+              "requests": 100000,
+              "windowSeconds": 60
+            }
+          },
+          "notice": "POST, PUT, PATCH, and DELETE requests are simulated. They return realistic responses but never modify the shared dataset."
+        }
+      }
+    },
+    "users.list": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "users": [
+            {
+              "id": 1,
+              "firstName": "Emily",
+              "lastName": "Carter",
+              "username": "emilyc",
+              "email": "emily.carter@example.com",
+              "phone": "+1 555-0100",
+              "age": 32,
+              "gender": "female",
+              "birthDate": "1993-02-08",
+              "image": "http://localhost:4000/api/v1/images/users/1",
+              "role": "admin",
+              "address": {
+                "street": "3335 Lakeview Terrace",
+                "city": "Denver",
+                "state": "Colorado",
+                "postalCode": "97836",
+                "country": "United States"
+              },
+              "company": {
+                "name": "Evergreen Robotics",
+                "department": "Engineering",
+                "title": "DevOps Engineer"
+              }
+            },
+            {
+              "id": 2,
+              "firstName": "Michael",
+              "lastName": "Brooks",
+              "username": "michaelb",
+              "email": "michael.brooks@example.com",
+              "phone": "+1 555-0101",
+              "age": 41,
+              "gender": "male",
+              "birthDate": "1984-09-10",
+              "image": "http://localhost:4000/api/v1/images/users/2",
+              "role": "user",
+              "address": {
+                "street": "6332 Willow Drive",
+                "city": "Portland",
+                "state": "Oregon",
+                "postalCode": "86238",
+                "country": "United States"
+              },
+              "company": {
+                "name": "Tidewater Finance",
+                "department": "Engineering",
+                "title": "Engineering Manager"
+              }
+            }
+          ],
+          "total": 100,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: limit must be at most 100.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/users",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "limit",
+              "message": "limit must be at most 100"
+            }
+          ]
+        }
+      }
+    },
+    "users.search": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "users": [
+            {
+              "id": 1,
+              "firstName": "Emily",
+              "lastName": "Carter",
+              "username": "emilyc",
+              "email": "emily.carter@example.com",
+              "phone": "+1 555-0100",
+              "age": 32,
+              "gender": "female",
+              "birthDate": "1993-02-08",
+              "image": "http://localhost:4000/api/v1/images/users/1",
+              "role": "admin",
+              "address": {
+                "street": "3335 Lakeview Terrace",
+                "city": "Denver",
+                "state": "Colorado",
+                "postalCode": "97836",
+                "country": "United States"
+              },
+              "company": {
+                "name": "Evergreen Robotics",
+                "department": "Engineering",
+                "title": "DevOps Engineer"
+              }
+            },
+            {
+              "id": 56,
+              "firstName": "Emily",
+              "lastName": "Lopez",
+              "username": "emilyl",
+              "email": "emily.lopez56@example.com",
+              "phone": "+1 555-0155",
+              "age": 21,
+              "gender": "female",
+              "birthDate": "2004-01-22",
+              "image": "http://localhost:4000/api/v1/images/users/56",
+              "role": "user",
+              "address": {
+                "street": "6743 Elm Court",
+                "city": "Denver",
+                "state": "Colorado",
+                "postalCode": "46931",
+                "country": "United States"
+              },
+              "company": {
+                "name": "Harborline Logistics",
+                "department": "Engineering",
+                "title": "Senior Software Engineer"
+              }
+            }
+          ],
+          "total": 2,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: q is required.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/users/search",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "q",
+              "message": "q is required"
+            }
+          ]
+        }
+      }
+    },
+    "users.get": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "firstName": "Emily",
+          "lastName": "Carter",
+          "username": "emilyc",
+          "email": "emily.carter@example.com",
+          "phone": "+1 555-0100",
+          "age": 32,
+          "gender": "female",
+          "birthDate": "1993-02-08",
+          "image": "http://localhost:4000/api/v1/images/users/1",
+          "role": "admin",
+          "address": {
+            "street": "3335 Lakeview Terrace",
+            "city": "Denver",
+            "state": "Colorado",
+            "postalCode": "97836",
+            "country": "United States"
+          },
+          "company": {
+            "name": "Evergreen Robotics",
+            "department": "Engineering",
+            "title": "DevOps Engineer"
+          }
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "User with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/users/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "users.posts": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "posts": [
+            {
+              "id": 1,
+              "title": "Why I write tests before fixing bugs",
+              "body": "Writing the failing test first made the bug impossible to ignore. Pairing for an hour was faster than a day of back-and-forth messages. Clear error messages turned out to be the best documentation we had.",
+              "userId": 1,
+              "tags": [
+                "coding",
+                "weekend"
+              ],
+              "reactions": {
+                "likes": 398,
+                "dislikes": 28
+              },
+              "views": 1472
+            },
+            {
+              "id": 2,
+              "title": "My slow Sunday pour-over routine",
+              "body": "Sharing a pot with neighbors turned into a weekly tradition. Fresh water and a clean kettle make a bigger difference than I expected. Weighing the beans felt fussy at first, but the cups became noticeably more consistent.",
+              "userId": 1,
+              "tags": [
+                "coffee",
+                "learning",
+                "beginners"
+              ],
+              "reactions": {
+                "likes": 330,
+                "dislikes": 8
+              },
+              "views": 1187
+            }
+          ],
+          "total": 3,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "User with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/users/999999/posts",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "users.todos": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "todos": [
+            {
+              "id": 1,
+              "todo": "Reply to project kickoff email",
+              "completed": false,
+              "userId": 1
+            },
+            {
+              "id": 156,
+              "todo": "Write unit tests for the login form",
+              "completed": true,
+              "userId": 1
+            }
+          ],
+          "total": 2,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "User with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/users/999999/todos",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "users.carts": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "carts": [
+            {
+              "id": 1,
+              "userId": 1,
+              "products": [
+                {
+                  "id": 100,
+                  "title": "Aquaform Kickboard",
+                  "price": 117.99,
+                  "quantity": 2,
+                  "total": 235.98,
+                  "discountPercentage": 0.09,
+                  "discountedTotal": 235.77,
+                  "thumbnail": "http://localhost:4000/api/v1/images/products/100"
+                },
+                {
+                  "id": 7,
+                  "title": "Orbitel One Smartphone",
+                  "price": 1192.99,
+                  "quantity": 2,
+                  "total": 2385.98,
+                  "discountPercentage": 13.24,
+                  "discountedTotal": 2070.08,
+                  "thumbnail": "http://localhost:4000/api/v1/images/products/7"
+                },
+                {
+                  "id": 49,
+                  "title": "Lumio Watch Sport Strap",
+                  "price": 546.99,
+                  "quantity": 4,
+                  "total": 2187.96,
+                  "discountPercentage": 1.02,
+                  "discountedTotal": 2165.64,
+                  "thumbnail": "http://localhost:4000/api/v1/images/products/49"
+                }
+              ],
+              "total": 4809.92,
+              "discountedTotal": 4471.49,
+              "totalProducts": 3,
+              "totalQuantity": 8
+            }
+          ],
+          "total": 1,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "User with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/users/999999/carts",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "users.create": {
+      "success": {
+        "status": 201,
+        "contentType": "application/json",
+        "body": {
+          "id": 101,
+          "name": "Alex Morgan",
+          "email": "alex@example.com"
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: email: email is required",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/users",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "email",
+              "message": "email is required"
+            }
+          ]
+        }
+      }
+    },
+    "users.replace": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "firstName": "Emily",
+          "lastName": "Carter-Hayes",
+          "email": "emily.hayes@example.com",
+          "age": 35
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "User with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/users/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "users.patch": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "firstName": "Emily",
+          "lastName": "Hayes",
+          "username": "emilyc",
+          "email": "emily.carter@example.com",
+          "phone": "+1 555-0100",
+          "age": 32,
+          "gender": "female",
+          "birthDate": "1993-02-08",
+          "image": "http://localhost:4000/api/v1/images/users/1",
+          "role": "admin",
+          "address": {
+            "street": "3335 Lakeview Terrace",
+            "city": "Denver",
+            "state": "Colorado",
+            "postalCode": "97836",
+            "country": "United States"
+          },
+          "company": {
+            "name": "Evergreen Robotics",
+            "department": "Engineering",
+            "title": "DevOps Engineer"
+          }
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: unknownField: Unknown field(s): unknownField",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/users/1",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "unknownField",
+              "message": "Unknown field(s): unknownField"
+            }
+          ]
+        }
+      }
+    },
+    "users.delete": {
+      "success": {
+        "status": 204,
+        "contentType": null,
+        "body": null
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "User with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/users/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "products.list": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "products": [
+            {
+              "id": 1,
+              "title": "Lumio Nova X5 Smartphone",
+              "description": "The Lumio Nova X5 Smartphone features all-day battery life and water and dust resistance. A dependable choice from Lumio.",
+              "category": "smartphones",
+              "brand": "Lumio",
+              "price": 1190.99,
+              "discountPercentage": 21.56,
+              "rating": 2.9,
+              "stock": 50,
+              "sku": "SMA-LUM-0001",
+              "tags": [
+                "mobile",
+                "5g",
+                "electronics"
+              ],
+              "availabilityStatus": "In Stock",
+              "thumbnail": "http://localhost:4000/api/v1/images/products/1"
+            },
+            {
+              "id": 2,
+              "title": "Lumio Nova X5 Pro Smartphone",
+              "description": "The Lumio Nova X5 Pro Smartphone features water and dust resistance and a dual-lens camera system. A dependable choice from Lumio.",
+              "category": "smartphones",
+              "brand": "Lumio",
+              "price": 306.99,
+              "discountPercentage": 9.03,
+              "rating": 4.4,
+              "stock": 146,
+              "sku": "SMA-LUM-0002",
+              "tags": [
+                "mobile",
+                "5g"
+              ],
+              "availabilityStatus": "In Stock",
+              "thumbnail": "http://localhost:4000/api/v1/images/products/2"
+            }
+          ],
+          "total": 100,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: limit must be at most 100.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/products",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "limit",
+              "message": "limit must be at most 100"
+            }
+          ]
+        }
+      }
+    },
+    "products.search": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "products": [
+            {
+              "id": 1,
+              "title": "Lumio Nova X5 Smartphone",
+              "description": "The Lumio Nova X5 Smartphone features all-day battery life and water and dust resistance. A dependable choice from Lumio.",
+              "category": "smartphones",
+              "brand": "Lumio",
+              "price": 1190.99,
+              "discountPercentage": 21.56,
+              "rating": 2.9,
+              "stock": 50,
+              "sku": "SMA-LUM-0001",
+              "tags": [
+                "mobile",
+                "5g",
+                "electronics"
+              ],
+              "availabilityStatus": "In Stock",
+              "thumbnail": "http://localhost:4000/api/v1/images/products/1"
+            },
+            {
+              "id": 2,
+              "title": "Lumio Nova X5 Pro Smartphone",
+              "description": "The Lumio Nova X5 Pro Smartphone features water and dust resistance and a dual-lens camera system. A dependable choice from Lumio.",
+              "category": "smartphones",
+              "brand": "Lumio",
+              "price": 306.99,
+              "discountPercentage": 9.03,
+              "rating": 4.4,
+              "stock": 146,
+              "sku": "SMA-LUM-0002",
+              "tags": [
+                "mobile",
+                "5g"
+              ],
+              "availabilityStatus": "In Stock",
+              "thumbnail": "http://localhost:4000/api/v1/images/products/2"
+            }
+          ],
+          "total": 18,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: q is required.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/products/search",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "q",
+              "message": "q is required"
+            }
+          ]
+        }
+      }
+    },
+    "products.categories": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "categories": [
+            {
+              "slug": "audio",
+              "name": "Audio",
+              "productCount": 10
+            },
+            {
+              "slug": "beauty",
+              "name": "Beauty",
+              "productCount": 10
+            },
+            {
+              "slug": "furniture",
+              "name": "Furniture",
+              "productCount": 10
+            },
+            {
+              "slug": "groceries",
+              "name": "Groceries",
+              "productCount": 10
+            },
+            {
+              "slug": "kitchen-accessories",
+              "name": "Kitchen Accessories",
+              "productCount": 10
+            },
+            {
+              "slug": "laptops",
+              "name": "Laptops",
+              "productCount": 10
+            },
+            {
+              "slug": "smartphones",
+              "name": "Smartphones",
+              "productCount": 10
+            },
+            {
+              "slug": "sports-accessories",
+              "name": "Sports Accessories",
+              "productCount": 10
+            },
+            {
+              "slug": "tablets",
+              "name": "Tablets",
+              "productCount": 10
+            },
+            {
+              "slug": "wearables",
+              "name": "Wearables",
+              "productCount": 10
+            }
+          ],
+          "total": 10
+        }
+      }
+    },
+    "products.byCategory": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "products": [
+            {
+              "id": 1,
+              "title": "Lumio Nova X5 Smartphone",
+              "description": "The Lumio Nova X5 Smartphone features all-day battery life and water and dust resistance. A dependable choice from Lumio.",
+              "category": "smartphones",
+              "brand": "Lumio",
+              "price": 1190.99,
+              "discountPercentage": 21.56,
+              "rating": 2.9,
+              "stock": 50,
+              "sku": "SMA-LUM-0001",
+              "tags": [
+                "mobile",
+                "5g",
+                "electronics"
+              ],
+              "availabilityStatus": "In Stock",
+              "thumbnail": "http://localhost:4000/api/v1/images/products/1"
+            },
+            {
+              "id": 2,
+              "title": "Lumio Nova X5 Pro Smartphone",
+              "description": "The Lumio Nova X5 Pro Smartphone features water and dust resistance and a dual-lens camera system. A dependable choice from Lumio.",
+              "category": "smartphones",
+              "brand": "Lumio",
+              "price": 306.99,
+              "discountPercentage": 9.03,
+              "rating": 4.4,
+              "stock": 146,
+              "sku": "SMA-LUM-0002",
+              "tags": [
+                "mobile",
+                "5g"
+              ],
+              "availabilityStatus": "In Stock",
+              "thumbnail": "http://localhost:4000/api/v1/images/products/2"
+            }
+          ],
+          "total": 10,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Product category \"time-machines\" not found. See /api/v1/products/categories",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/products/category/time-machines",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "products.get": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "title": "Lumio Nova X5 Smartphone",
+          "description": "The Lumio Nova X5 Smartphone features all-day battery life and water and dust resistance. A dependable choice from Lumio.",
+          "category": "smartphones",
+          "brand": "Lumio",
+          "price": 1190.99,
+          "discountPercentage": 21.56,
+          "rating": 2.9,
+          "stock": 50,
+          "sku": "SMA-LUM-0001",
+          "tags": [
+            "mobile",
+            "5g",
+            "electronics"
+          ],
+          "availabilityStatus": "In Stock",
+          "thumbnail": "http://localhost:4000/api/v1/images/products/1"
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Product with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/products/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "products.create": {
+      "success": {
+        "status": 201,
+        "contentType": "application/json",
+        "body": {
+          "id": 101,
+          "title": "Trail Runner Water Bottle",
+          "category": "sports-accessories",
+          "brand": "Peakline",
+          "price": 18.5,
+          "stock": 40
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: title: title is required; price: price is required",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/products",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "title",
+              "message": "title is required"
+            },
+            {
+              "path": "price",
+              "message": "price is required"
+            }
+          ]
+        }
+      }
+    },
+    "products.replace": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "title": "Nova X5 Smartphone (2026 Edition)",
+          "category": "smartphones",
+          "brand": "Lumio",
+          "price": 649,
+          "stock": 25
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Product with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/products/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "products.patch": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "title": "Lumio Nova X5 Smartphone",
+          "description": "The Lumio Nova X5 Smartphone features all-day battery life and water and dust resistance. A dependable choice from Lumio.",
+          "category": "smartphones",
+          "brand": "Lumio",
+          "price": 599.99,
+          "discountPercentage": 21.56,
+          "rating": 2.9,
+          "stock": 50,
+          "sku": "SMA-LUM-0001",
+          "tags": [
+            "mobile",
+            "5g",
+            "electronics"
+          ],
+          "availabilityStatus": "In Stock",
+          "thumbnail": "http://localhost:4000/api/v1/images/products/1"
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: unknownField: Unknown field(s): unknownField",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/products/1",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "unknownField",
+              "message": "Unknown field(s): unknownField"
+            }
+          ]
+        }
+      }
+    },
+    "products.delete": {
+      "success": {
+        "status": 204,
+        "contentType": null,
+        "body": null
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Product with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/products/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "posts.list": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "posts": [
+            {
+              "id": 1,
+              "title": "Why I write tests before fixing bugs",
+              "body": "Writing the failing test first made the bug impossible to ignore. Pairing for an hour was faster than a day of back-and-forth messages. Clear error messages turned out to be the best documentation we had.",
+              "userId": 1,
+              "tags": [
+                "coding",
+                "weekend"
+              ],
+              "reactions": {
+                "likes": 398,
+                "dislikes": 28
+              },
+              "views": 1472
+            },
+            {
+              "id": 2,
+              "title": "My slow Sunday pour-over routine",
+              "body": "Sharing a pot with neighbors turned into a weekly tradition. Fresh water and a clean kettle make a bigger difference than I expected. Weighing the beans felt fussy at first, but the cups became noticeably more consistent.",
+              "userId": 1,
+              "tags": [
+                "coffee",
+                "learning",
+                "beginners"
+              ],
+              "reactions": {
+                "likes": 330,
+                "dislikes": 8
+              },
+              "views": 1187
+            }
+          ],
+          "total": 100,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: limit must be at most 100.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/posts",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "limit",
+              "message": "limit must be at most 100"
+            }
+          ]
+        }
+      }
+    },
+    "posts.search": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "posts": [
+            {
+              "id": 2,
+              "title": "My slow Sunday pour-over routine",
+              "body": "Sharing a pot with neighbors turned into a weekly tradition. Fresh water and a clean kettle make a bigger difference than I expected. Weighing the beans felt fussy at first, but the cups became noticeably more consistent.",
+              "userId": 1,
+              "tags": [
+                "coffee",
+                "learning",
+                "beginners"
+              ],
+              "reactions": {
+                "likes": 330,
+                "dislikes": 8
+              },
+              "views": 1187
+            },
+            {
+              "id": 12,
+              "title": "Finding the right grind size by taste",
+              "body": "I wrote down every recipe change in a small notebook for a month. Fresh water and a clean kettle make a bigger difference than I expected. Sharing a pot with neighbors turned into a weekly tradition.",
+              "userId": 22,
+              "tags": [
+                "coffee",
+                "habits"
+              ],
+              "reactions": {
+                "likes": 834,
+                "dislikes": 22
+              },
+              "views": 3371
+            }
+          ],
+          "total": 10,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: q is required.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/posts/search",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "q",
+              "message": "q is required"
+            }
+          ]
+        }
+      }
+    },
+    "posts.get": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "title": "Why I write tests before fixing bugs",
+          "body": "Writing the failing test first made the bug impossible to ignore. Pairing for an hour was faster than a day of back-and-forth messages. Clear error messages turned out to be the best documentation we had.",
+          "userId": 1,
+          "tags": [
+            "coding",
+            "weekend"
+          ],
+          "reactions": {
+            "likes": 398,
+            "dislikes": 28
+          },
+          "views": 1472
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Post with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/posts/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "posts.comments": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "comments": [
+            {
+              "id": 1,
+              "body": "Do you have any recommendations for someone just starting out?",
+              "postId": 1,
+              "userId": 87,
+              "likes": 9
+            },
+            {
+              "id": 261,
+              "body": "Could you share more details about how you got started?",
+              "postId": 1,
+              "userId": 28,
+              "likes": 50
+            }
+          ],
+          "total": 4,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Post with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/posts/999999/comments",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "posts.create": {
+      "success": {
+        "status": 201,
+        "contentType": "application/json",
+        "body": {
+          "id": 101,
+          "title": "My first API request",
+          "body": "Today I sent my first request to Mock APIs.",
+          "userId": 5,
+          "tags": []
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: title: title is required; body: body is required; userId: userId is required",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/posts",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "title",
+              "message": "title is required"
+            },
+            {
+              "path": "body",
+              "message": "body is required"
+            },
+            {
+              "path": "userId",
+              "message": "userId is required"
+            }
+          ]
+        }
+      }
+    },
+    "posts.replace": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "title": "Updated title",
+          "body": "Completely replaced body text.",
+          "userId": 1,
+          "tags": [
+            "update"
+          ]
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Post with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/posts/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "posts.patch": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "title": "Patched title",
+          "body": "Writing the failing test first made the bug impossible to ignore. Pairing for an hour was faster than a day of back-and-forth messages. Clear error messages turned out to be the best documentation we had.",
+          "userId": 1,
+          "tags": [
+            "coding",
+            "weekend"
+          ],
+          "reactions": {
+            "likes": 398,
+            "dislikes": 28
+          },
+          "views": 1472
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: unknownField: Unknown field(s): unknownField",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/posts/1",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "unknownField",
+              "message": "Unknown field(s): unknownField"
+            }
+          ]
+        }
+      }
+    },
+    "posts.delete": {
+      "success": {
+        "status": 204,
+        "contentType": null,
+        "body": null
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Post with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/posts/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "comments.list": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "comments": [
+            {
+              "id": 1,
+              "body": "Do you have any recommendations for someone just starting out?",
+              "postId": 1,
+              "userId": 87,
+              "likes": 9
+            },
+            {
+              "id": 2,
+              "body": "Sent this to a friend who will love it.",
+              "postId": 2,
+              "userId": 9,
+              "likes": 29
+            }
+          ],
+          "total": 300,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: limit must be at most 100.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/comments",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "limit",
+              "message": "limit must be at most 100"
+            }
+          ]
+        }
+      }
+    },
+    "comments.get": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "body": "Do you have any recommendations for someone just starting out?",
+          "postId": 1,
+          "userId": 87,
+          "likes": 9
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Comment with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/comments/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "comments.create": {
+      "success": {
+        "status": 201,
+        "contentType": "application/json",
+        "body": {
+          "id": 301,
+          "body": "Great write-up, thanks for sharing!",
+          "postId": 1,
+          "userId": 3,
+          "likes": 0
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: body: body is required; postId: postId is required; userId: userId is required",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/comments",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "body",
+              "message": "body is required"
+            },
+            {
+              "path": "postId",
+              "message": "postId is required"
+            },
+            {
+              "path": "userId",
+              "message": "userId is required"
+            }
+          ]
+        }
+      }
+    },
+    "comments.replace": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "body": "Edited comment text.",
+          "postId": 1,
+          "userId": 3,
+          "likes": 0
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Comment with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/comments/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "comments.patch": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "body": "Edited comment text.",
+          "postId": 1,
+          "userId": 87,
+          "likes": 9
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: unknownField: Unknown field(s): unknownField",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/comments/1",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "unknownField",
+              "message": "Unknown field(s): unknownField"
+            }
+          ]
+        }
+      }
+    },
+    "comments.delete": {
+      "success": {
+        "status": 204,
+        "contentType": null,
+        "body": null
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Comment with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/comments/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "todos.list": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "todos": [
+            {
+              "id": 1,
+              "todo": "Reply to project kickoff email",
+              "completed": false,
+              "userId": 1
+            },
+            {
+              "id": 2,
+              "todo": "Buy groceries for the week",
+              "completed": false,
+              "userId": 2
+            }
+          ],
+          "total": 200,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: limit must be at most 100.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/todos",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "limit",
+              "message": "limit must be at most 100"
+            }
+          ]
+        }
+      }
+    },
+    "todos.get": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "todo": "Reply to project kickoff email",
+          "completed": false,
+          "userId": 1
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Todo with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/todos/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "todos.create": {
+      "success": {
+        "status": 201,
+        "contentType": "application/json",
+        "body": {
+          "id": 201,
+          "todo": "Write integration tests",
+          "completed": false,
+          "userId": 5
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: todo: todo is required; userId: userId is required",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/todos",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "todo",
+              "message": "todo is required"
+            },
+            {
+              "path": "userId",
+              "message": "userId is required"
+            }
+          ]
+        }
+      }
+    },
+    "todos.replace": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "todo": "Review pull request",
+          "completed": true,
+          "userId": 1
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Todo with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/todos/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "todos.patch": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "todo": "Reply to project kickoff email",
+          "completed": true,
+          "userId": 1
+        }
+      },
+      "failure": {
+        "status": 422,
+        "contentType": "application/json",
+        "body": {
+          "message": "Validation failed: unknownField: Unknown field(s): unknownField",
+          "status": 422,
+          "code": "VALIDATION_ERROR",
+          "path": "/api/v1/todos/1",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "unknownField",
+              "message": "Unknown field(s): unknownField"
+            }
+          ]
+        }
+      }
+    },
+    "todos.delete": {
+      "success": {
+        "status": 204,
+        "contentType": null,
+        "body": null
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Todo with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/todos/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "carts.list": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "carts": [
+            {
+              "id": 1,
+              "userId": 1,
+              "products": [
+                {
+                  "id": 100,
+                  "title": "Aquaform Kickboard",
+                  "price": 117.99,
+                  "quantity": 2,
+                  "total": 235.98,
+                  "discountPercentage": 0.09,
+                  "discountedTotal": 235.77,
+                  "thumbnail": "http://localhost:4000/api/v1/images/products/100"
+                },
+                {
+                  "id": 7,
+                  "title": "Orbitel One Smartphone",
+                  "price": 1192.99,
+                  "quantity": 2,
+                  "total": 2385.98,
+                  "discountPercentage": 13.24,
+                  "discountedTotal": 2070.08,
+                  "thumbnail": "http://localhost:4000/api/v1/images/products/7"
+                },
+                {
+                  "id": 49,
+                  "title": "Lumio Watch Sport Strap",
+                  "price": 546.99,
+                  "quantity": 4,
+                  "total": 2187.96,
+                  "discountPercentage": 1.02,
+                  "discountedTotal": 2165.64,
+                  "thumbnail": "http://localhost:4000/api/v1/images/products/49"
+                }
+              ],
+              "total": 4809.92,
+              "discountedTotal": 4471.49,
+              "totalProducts": 3,
+              "totalQuantity": 8
+            },
+            {
+              "id": 2,
+              "userId": 75,
+              "products": [
+                {
+                  "id": 85,
+                  "title": "Dewdrop Gentle Foaming Cleanser",
+                  "price": 51.99,
+                  "quantity": 1,
+                  "total": 51.99,
+                  "discountPercentage": 3.93,
+                  "discountedTotal": 49.95,
+                  "thumbnail": "http://localhost:4000/api/v1/images/products/85"
+                },
+                {
+                  "id": 16,
+                  "title": "Arcbook Go 12 Chromebook",
+                  "price": 1982.99,
+                  "quantity": 3,
+                  "total": 5948.97,
+                  "discountPercentage": 18.14,
+                  "discountedTotal": 4869.83,
+                  "thumbnail": "http://localhost:4000/api/v1/images/products/16"
+                }
+              ],
+              "total": 6000.96,
+              "discountedTotal": 4919.78,
+              "totalProducts": 2,
+              "totalQuantity": 4
+            }
+          ],
+          "total": 50,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: limit must be at most 100.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/carts",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "limit",
+              "message": "limit must be at most 100"
+            }
+          ]
+        }
+      }
+    },
+    "carts.get": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "userId": 1,
+          "products": [
+            {
+              "id": 100,
+              "title": "Aquaform Kickboard",
+              "price": 117.99,
+              "quantity": 2,
+              "total": 235.98,
+              "discountPercentage": 0.09,
+              "discountedTotal": 235.77,
+              "thumbnail": "http://localhost:4000/api/v1/images/products/100"
+            },
+            {
+              "id": 7,
+              "title": "Orbitel One Smartphone",
+              "price": 1192.99,
+              "quantity": 2,
+              "total": 2385.98,
+              "discountPercentage": 13.24,
+              "discountedTotal": 2070.08,
+              "thumbnail": "http://localhost:4000/api/v1/images/products/7"
+            },
+            {
+              "id": 49,
+              "title": "Lumio Watch Sport Strap",
+              "price": 546.99,
+              "quantity": 4,
+              "total": 2187.96,
+              "discountPercentage": 1.02,
+              "discountedTotal": 2165.64,
+              "thumbnail": "http://localhost:4000/api/v1/images/products/49"
+            }
+          ],
+          "total": 4809.92,
+          "discountedTotal": 4471.49,
+          "totalProducts": 3,
+          "totalQuantity": 8
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Cart with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/carts/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "recipes.list": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "recipes": [
+            {
+              "id": 1,
+              "name": "Classic Margherita Pizza",
+              "cuisine": "Italian",
+              "difficulty": "Medium",
+              "mealType": [
+                "Dinner"
+              ],
+              "tags": [
+                "pizza",
+                "vegetarian"
+              ],
+              "ingredients": [
+                "pizza dough",
+                "tomato sauce",
+                "fresh mozzarella",
+                "fresh basil",
+                "olive oil",
+                "salt"
+              ],
+              "instructions": [
+                "Preheat the oven to its highest setting with a tray or pizza stone inside.",
+                "Stretch the pizza dough into a thin round on a floured surface.",
+                "Spread a thin layer of tomato sauce and tear the mozzarella over the top.",
+                "Bake for 8-10 minutes until the crust is blistered and the cheese is bubbling.",
+                "Finish with fresh basil and a drizzle of olive oil."
+              ],
+              "prepTimeMinutes": 18,
+              "cookTimeMinutes": 11,
+              "servings": 2,
+              "caloriesPerServing": 845,
+              "rating": 4.9,
+              "reviewCount": 15,
+              "userId": 87,
+              "image": "http://localhost:4000/api/v1/images/recipes/1"
+            },
+            {
+              "id": 2,
+              "name": "Spaghetti Aglio e Olio",
+              "cuisine": "Italian",
+              "difficulty": "Easy",
+              "mealType": [
+                "Dinner"
+              ],
+              "tags": [
+                "pasta",
+                "vegetarian",
+                "quick"
+              ],
+              "ingredients": [
+                "spaghetti",
+                "garlic",
+                "olive oil",
+                "red pepper flakes",
+                "parsley",
+                "parmesan"
+              ],
+              "instructions": [
+                "Bring a large pot of salted water to a boil.",
+                "Cook the spaghetti until al dente, then reserve a cup of the cooking water.",
+                "Meanwhile, gently cook the remaining ingredients in olive oil over medium heat.",
+                "Toss the drained spaghetti with the sauce, adding cooking water as needed.",
+                "Serve immediately, topped with parmesan."
+              ],
+              "prepTimeMinutes": 11,
+              "cookTimeMinutes": 11,
+              "servings": 2,
+              "caloriesPerServing": 553,
+              "rating": 4.6,
+              "reviewCount": 109,
+              "userId": 39,
+              "image": "http://localhost:4000/api/v1/images/recipes/2"
+            }
+          ],
+          "total": 50,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: limit must be at most 100.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/recipes",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "limit",
+              "message": "limit must be at most 100"
+            }
+          ]
+        }
+      }
+    },
+    "recipes.search": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "recipes": [
+            {
+              "id": 2,
+              "name": "Spaghetti Aglio e Olio",
+              "cuisine": "Italian",
+              "difficulty": "Easy",
+              "mealType": [
+                "Dinner"
+              ],
+              "tags": [
+                "pasta",
+                "vegetarian",
+                "quick"
+              ],
+              "ingredients": [
+                "spaghetti",
+                "garlic",
+                "olive oil",
+                "red pepper flakes",
+                "parsley",
+                "parmesan"
+              ],
+              "instructions": [
+                "Bring a large pot of salted water to a boil.",
+                "Cook the spaghetti until al dente, then reserve a cup of the cooking water.",
+                "Meanwhile, gently cook the remaining ingredients in olive oil over medium heat.",
+                "Toss the drained spaghetti with the sauce, adding cooking water as needed.",
+                "Serve immediately, topped with parmesan."
+              ],
+              "prepTimeMinutes": 11,
+              "cookTimeMinutes": 11,
+              "servings": 2,
+              "caloriesPerServing": 553,
+              "rating": 4.6,
+              "reviewCount": 109,
+              "userId": 39,
+              "image": "http://localhost:4000/api/v1/images/recipes/2"
+            },
+            {
+              "id": 3,
+              "name": "Creamy Mushroom Pasta",
+              "cuisine": "Italian",
+              "difficulty": "Easy",
+              "mealType": [
+                "Lunch",
+                "Dinner"
+              ],
+              "tags": [
+                "pasta",
+                "vegetarian"
+              ],
+              "ingredients": [
+                "penne",
+                "mushrooms",
+                "cream",
+                "garlic",
+                "parmesan",
+                "fresh thyme"
+              ],
+              "instructions": [
+                "Bring a large pot of salted water to a boil.",
+                "Cook the penne until al dente, then reserve a cup of the cooking water.",
+                "Meanwhile, gently cook the remaining ingredients in olive oil over medium heat.",
+                "Toss the drained penne with the sauce, adding cooking water as needed.",
+                "Serve immediately, topped with fresh thyme."
+              ],
+              "prepTimeMinutes": 17,
+              "cookTimeMinutes": 22,
+              "servings": 4,
+              "caloriesPerServing": 470,
+              "rating": 4.9,
+              "reviewCount": 101,
+              "userId": 72,
+              "image": "http://localhost:4000/api/v1/images/recipes/3"
+            }
+          ],
+          "total": 2,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: q is required.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/recipes/search",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "q",
+              "message": "q is required"
+            }
+          ]
+        }
+      }
+    },
+    "recipes.get": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "name": "Classic Margherita Pizza",
+          "cuisine": "Italian",
+          "difficulty": "Medium",
+          "mealType": [
+            "Dinner"
+          ],
+          "tags": [
+            "pizza",
+            "vegetarian"
+          ],
+          "ingredients": [
+            "pizza dough",
+            "tomato sauce",
+            "fresh mozzarella",
+            "fresh basil",
+            "olive oil",
+            "salt"
+          ],
+          "instructions": [
+            "Preheat the oven to its highest setting with a tray or pizza stone inside.",
+            "Stretch the pizza dough into a thin round on a floured surface.",
+            "Spread a thin layer of tomato sauce and tear the mozzarella over the top.",
+            "Bake for 8-10 minutes until the crust is blistered and the cheese is bubbling.",
+            "Finish with fresh basil and a drizzle of olive oil."
+          ],
+          "prepTimeMinutes": 18,
+          "cookTimeMinutes": 11,
+          "servings": 2,
+          "caloriesPerServing": 845,
+          "rating": 4.9,
+          "reviewCount": 15,
+          "userId": 87,
+          "image": "http://localhost:4000/api/v1/images/recipes/1"
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Recipe with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/recipes/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "quotes.list": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "quotes": [
+            {
+              "id": 1,
+              "quote": "Small steps taken daily outrun big plans made yearly.",
+              "author": "Mara Ellison"
+            },
+            {
+              "id": 2,
+              "quote": "A good question is a map; a good answer is only a destination.",
+              "author": "Tobias Wren"
+            }
+          ],
+          "total": 50,
+          "skip": 0,
+          "limit": 2
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: limit must be at most 100.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/quotes",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "limit",
+              "message": "limit must be at most 100"
+            }
+          ]
+        }
+      }
+    },
+    "quotes.random": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 28,
+          "quote": "Teach what you learn and you will learn it twice.",
+          "author": "Lena Okoro"
+        }
+      }
+    },
+    "quotes.get": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "quote": "Small steps taken daily outrun big plans made yearly.",
+          "author": "Mara Ellison"
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Quote with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/quotes/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "auth.login": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo-payload.demo-signature",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo-payload.demo-signature",
+          "tokenType": "Bearer",
+          "expiresIn": 1800,
+          "demo": true,
+          "notice": "Demo token for practice only. Do not use Mock APIs authentication to secure real applications.",
+          "user": {
+            "id": 1,
+            "username": "emilyc",
+            "email": "emily.carter@example.com",
+            "firstName": "Emily",
+            "lastName": "Carter",
+            "role": "admin",
+            "image": "http://localhost:4000/api/v1/images/users/1"
+          }
+        }
+      },
+      "failure": {
+        "status": 401,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid username/email or password",
+          "status": 401,
+          "code": "INVALID_CREDENTIALS",
+          "path": "/api/v1/auth/login",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "auth.register": {
+      "success": {
+        "status": 201,
+        "contentType": "application/json",
+        "body": {
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo-payload.demo-signature",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo-payload.demo-signature",
+          "tokenType": "Bearer",
+          "expiresIn": 1800,
+          "demo": true,
+          "notice": "Demo token for practice only. Do not use Mock APIs authentication to secure real applications.",
+          "user": {
+            "id": 101,
+            "username": "jordanlee",
+            "email": "jordan.lee@example.com",
+            "firstName": "Jordan",
+            "lastName": "Lee",
+            "role": "user",
+            "image": null
+          }
+        }
+      },
+      "failure": {
+        "status": 409,
+        "contentType": "application/json",
+        "body": {
+          "message": "A user with this email or username already exists",
+          "status": 409,
+          "code": "CONFLICT",
+          "path": "/api/v1/auth/register",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "username",
+              "message": "username \"emilyc\" is already used by another user"
+            }
+          ]
+        }
+      }
+    },
+    "auth.me": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "id": 1,
+          "username": "emilyc",
+          "email": "emily.carter@example.com",
+          "firstName": "Emily",
+          "lastName": "Carter",
+          "role": "admin",
+          "image": "http://localhost:4000/api/v1/images/users/1"
+        }
+      },
+      "failure": {
+        "status": 401,
+        "contentType": "application/json",
+        "body": {
+          "message": "The access token is invalid.",
+          "status": 401,
+          "code": "INVALID_TOKEN",
+          "path": "/api/v1/auth/me",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "auth.refresh": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo-payload.demo-signature",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.demo-payload.demo-signature",
+          "tokenType": "Bearer",
+          "expiresIn": 1800,
+          "demo": true,
+          "notice": "Demo token for practice only. Do not use Mock APIs authentication to secure real applications.",
+          "user": {
+            "id": 1,
+            "username": "emilyc",
+            "email": "emily.carter@example.com",
+            "firstName": "Emily",
+            "lastName": "Carter",
+            "role": "admin",
+            "image": "http://localhost:4000/api/v1/images/users/1"
+          }
+        }
+      },
+      "failure": {
+        "status": 401,
+        "contentType": "application/json",
+        "body": {
+          "message": "The refresh token is invalid.",
+          "status": 401,
+          "code": "INVALID_TOKEN",
+          "path": "/api/v1/auth/refresh",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "auth.admin": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "message": "Welcome, Emily! You have access to this admin-only demo route.",
+          "user": {
+            "id": 1,
+            "username": "emilyc",
+            "email": "emily.carter@example.com",
+            "firstName": "Emily",
+            "lastName": "Carter",
+            "role": "admin",
+            "image": "http://localhost:4000/api/v1/images/users/1"
+          }
+        }
+      },
+      "failure": {
+        "status": 401,
+        "contentType": "application/json",
+        "body": {
+          "message": "Missing Authorization header. Send: Authorization: Bearer <accessToken>",
+          "status": 401,
+          "code": "MISSING_TOKEN",
+          "path": "/api/v1/auth/admin",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "testing.echo": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "method": "POST",
+          "path": "/api/v1/test/echo",
+          "query": {
+            "source": "docs"
+          },
+          "headers": {
+            "host": "localhost:4000",
+            "user-agent": "curl/8.7.1",
+            "accept": "*/*",
+            "content-type": "application/json",
+            "x-custom-header": "demo",
+            "accept-encoding": "gzip, deflate",
+            "content-length": "<length>",
+            "connection": "close"
+          },
+          "body": {
+            "message": "Hello, Mock APIs!",
+            "count": 3
+          },
+          "contentType": "application/json",
+          "redacted": []
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Request body contains invalid JSON",
+          "status": 400,
+          "code": "INVALID_JSON",
+          "path": "/api/v1/test/echo",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "testing.delay": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "delayedMs": 500,
+          "message": "Responded after 500ms"
+        }
+      },
+      "failure": {
+        "status": 400,
+        "contentType": "application/json",
+        "body": {
+          "message": "Invalid query parameters: ms must be at most 5000.",
+          "status": 400,
+          "code": "INVALID_PARAMETER",
+          "path": "/api/v1/test/delay",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73",
+          "errors": [
+            {
+              "path": "ms",
+              "message": "ms must be at most 5000"
+            }
+          ]
+        }
+      }
+    },
+    "testing.status": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "status": 200,
+          "message": "Simulated 200 OK response"
+        }
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "Simulated 404 Not Found response",
+          "status": 404,
+          "code": "SIMULATED_STATUS",
+          "path": "/api/v1/test/status/404",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "images.get": {
+      "success": {
+        "status": 200,
+        "contentType": "image/svg+xml",
+        "body": null
+      },
+      "failure": {
+        "status": 404,
+        "contentType": "application/json",
+        "body": {
+          "message": "No image: users record with id 999999 not found",
+          "status": 404,
+          "code": "RESOURCE_NOT_FOUND",
+          "path": "/api/v1/images/users/999999",
+          "requestId": "6f1c2a9e-3b7d-4c51-9a0e-2d8f4b6c1e73"
+        }
+      }
+    },
+    "system.health": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "status": "ok",
+          "version": "1.0.0",
+          "uptimeSeconds": 42,
+          "startedAt": "2026-01-01T00:00:00.000Z",
+          "database": "connected"
+        }
+      }
+    },
+    "system.ready": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "status": "ready",
+          "database": "connected"
+        }
+      }
+    },
+    "system.openapi": {
+      "success": {
+        "status": 200,
+        "contentType": "application/json",
+        "body": {
+          "note": "The full OpenAPI document is returned. Download it from /openapi.json."
+        }
+      }
+    }
+  }
+}

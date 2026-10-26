@@ -1,0 +1,36 @@
+{
+  "name": "mock-apis",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mock APIs - a free public REST API with fake data, simulated CRUD, demo auth, and HTTP testing utilities.",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build:spec": "pnpm --filter @mockapis/api-spec build",
+    "dev": "pnpm build:spec && pnpm -r --parallel --filter @mockapis/api --filter @mockapis/web --filter @mockapis/api-spec dev",
+    "dev:api": "pnpm build:spec && pnpm --filter @mockapis/api dev",
+    "dev:web": "pnpm build:spec && pnpm --filter @mockapis/web dev",
+    "build": "pnpm -r build",
+    "start:api": "pnpm --filter @mockapis/api start",
+    "start:web": "pnpm --filter @mockapis/web start",
+    "lint": "eslint .",
+    "typecheck": "pnpm build:spec && pnpm -r typecheck",
+    "test": "pnpm build:spec && pnpm -r test",
+    "db:migrate": "pnpm build:spec && pnpm --filter @mockapis/api db:migrate",
+    "db:seed": "pnpm build:spec && pnpm --filter @mockapis/api db:seed",
+    "db:reset": "pnpm build:spec && pnpm --filter @mockapis/api db:reset",
+    "db:memory": "pnpm build:spec && pnpm --filter @mockapis/api db:memory",
+    "spec:examples": "pnpm build:spec && pnpm --filter @mockapis/api spec:examples && pnpm build:spec"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@next/eslint-plugin-next": "^16.4.1",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.4.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.2"
+  }
+}
