@@ -1,10 +1,9 @@
-# Build from the repository root:
-#   docker build -f apps/api/Dockerfile .
-# On Vercel (services + container runtime) the build context is the repo root.
+# Build from the repository root: docker build -f apps/api/Dockerfile .
+# Prefer Dockerfile.api at the repo root for Vercel container builds.
 FROM node:24-alpine AS base
 RUN npm install -g pnpm@12.11.2
 WORKDIR /app
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json ./
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json .npmrc ./
 COPY packages/api-spec/package.json packages/api-spec/
 COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/
