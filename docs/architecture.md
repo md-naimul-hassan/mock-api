@@ -48,3 +48,12 @@ The generic `createMutationHandlers` validates the body, checks references (for 
 - Docs pages are statically rendered from the registry. Code snippets and example responses are highlighted on the server with Shiki (dual light/dark themes).
 - Client components handle the "Try it" panels, the playground, the endpoint directory search, the theme, and toasts. They import only `@mockapis/api-spec/constants`, so Zod schemas never reach the browser bundle.
 - Requests that contain `{{accessToken}}` or `{{refreshToken}}` placeholders get fresh demo tokens from `/auth/login` before they are sent. Playground history lives in `sessionStorage`, and Authorization values are never stored.
+
+## API Builder
+
+User-owned custom mock APIs live alongside the shared practice API:
+
+- Management under `/api/v1/builder` (register/login JWT with issuer/audience `mockapis-builder`, separate from demo practice tokens).
+- Persistence in `builder_users`, `mock_projects`, and `mock_endpoints` (MongoDB `_id` ObjectIds).
+- Public runtime at `/api/v1/mock-apis/:projectId/...` where `projectId` is the project `_id` (rate-limited with `/api/v1`).
+- Quotas and response-size limits are defined in `@mockapis/api-spec` (`BUILDER_LIMITS`).

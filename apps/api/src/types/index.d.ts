@@ -1,3 +1,4 @@
+import type { BuilderTokenPayload } from '../helpers/builderJwt';
 import type { DemoTokenPayload } from '../helpers/jwtHelper';
 
 declare global {
@@ -11,6 +12,7 @@ declare global {
                 body?: unknown;
             };
             demoUser?: DemoTokenPayload;
+            builderUser?: BuilderTokenPayload;
         }
     }
 }

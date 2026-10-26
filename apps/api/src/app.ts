@@ -2,7 +2,7 @@ import cors from 'cors';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
-import { API_PREFIX, EXPOSED_RESPONSE_HEADERS } from '@mockapis/api-spec';
+import { API_PREFIX, EXPOSED_RESPONSE_HEADERS, MOCK_RUNTIME_PREFIX } from '@mockapis/api-spec';
 import config from './config';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
@@ -10,8 +10,10 @@ import { createRateLimiters, type RateLimitOptions } from './app/middlewares/rat
 import requestId from './app/middlewares/requestId';
 import requestLogger from './app/middlewares/requestLogger';
 import requestTimeout from './app/middlewares/requestTimeout';
+import requireDatabaseConnected from './app/middlewares/requireDatabaseConnected';
 import requireJsonBody from './app/middlewares/requireJsonBody';
 import simulateDelay from './app/middlewares/simulateDelay';
+import { MockRuntimeRoutes } from './app/modules/mockRuntime/mockRuntime.routes';
 import { getOpenApiDocument, SystemController } from './app/modules/system/system.controller';
 import router from './app/routes';
 import { ensureRuntimeReady } from './runtime';
@@ -75,18 +77,21 @@ export function createApp(options: AppOptions = {}) {
         app.use('/docs', swaggerUi.serve, swaggerUi.setup(getOpenApiDocument(), { customSiteTitle: 'Mock APIs - API Reference' }));
     }
 
-    app.use(
-        API_PREFIX,
-        ...createRateLimiters({
-            windowMs: config.rate_limit.window_ms,
-            max: config.rate_limit.max,
-            delayMax: config.rate_limit.delay_max,
-            store: config.rate_limit.store,
-            ...options.rateLimit,
-        }),
-    );
+    const rateLimiters = createRateLimiters({
+        windowMs: config.rate_limit.window_ms,
+        max: config.rate_limit.max,
+        delayMax: config.rate_limit.delay_max,
+        store: config.rate_limit.store,
+        ...options.rateLimit,
+    });
+
+    app.use(API_PREFIX, ...rateLimiters);
     app.use(API_PREFIX, requireJsonBody, express.json({ limit: config.body_limit, type: ['application/json', 'application/*+json'] }));
     app.use(API_PREFIX, (req: Request, res: Response, next: NextFunction) => (req.path.startsWith('/test/delay') ? next() : simulateDelay(req, res, next)));
+
+    // Public runtime for user-built mock APIs: /api/v1/mock-apis/:projectId/...
+    app.use(`${MOCK_RUNTIME_PREFIX}/:projectId`, requireDatabaseConnected, MockRuntimeRoutes);
+
     app.use(API_PREFIX, router);
 
     app.get('/', (_req: Request, res: Response) => {
@@ -94,6 +99,8 @@ export function createApp(options: AppOptions = {}) {
             name: 'Mock APIs',
             message: 'Free REST APIs for learning, building, and testing.',
             api: `${config.public_api_url}${API_PREFIX}`,
+            builder: `${config.public_api_url}${API_PREFIX}/builder`,
+            mockRuntime: `${config.public_api_url}${MOCK_RUNTIME_PREFIX}/:projectId`,
             openapi: `${config.public_api_url}/openapi.json`,
             docs: config.docs_enabled ? `${config.public_api_url}/docs` : null,
         });

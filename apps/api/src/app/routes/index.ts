@@ -1,7 +1,9 @@
 import express from 'express';
 import requireDatabase from '../middlewares/requireDatabase';
+import requireDatabaseConnected from '../middlewares/requireDatabaseConnected';
 import methodNotAllowed from '../middlewares/methodNotAllowed';
 import { AuthRoutes } from '../modules/auth/auth.routes';
+import { BuilderRoutes } from '../modules/builder/builder.routes';
 import { CartRoutes } from '../modules/cart/cart.routes';
 import { CommentRoutes } from '../modules/comment/comment.routes';
 import { ImageRoutes } from '../modules/image/image.routes';
@@ -27,9 +29,14 @@ const apiRoutes = [
     { path: '/auth', route: AuthRoutes, database: true },
     { path: '/images', route: ImageRoutes, database: true },
     { path: '/test', route: TestingRoutes, database: false },
+    { path: '/builder', route: BuilderRoutes, database: 'connected' as const },
 ];
 
 router.route('/').get(SystemController.root).all(methodNotAllowed('GET'));
-apiRoutes.forEach(({ path, route, database }) => (database ? router.use(path, requireDatabase, route) : router.use(path, route)));
+apiRoutes.forEach(({ path, route, database }) => {
+    if (database === true) router.use(path, requireDatabase, route);
+    else if (database === 'connected') router.use(path, requireDatabaseConnected, route);
+    else router.use(path, route);
+});
 
 export default router;

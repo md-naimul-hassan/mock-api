@@ -37,6 +37,7 @@ export const DOCS_NAV: NavGroup[] = [
             { title: 'Errors', href: '/docs/errors' },
             { title: 'Rate limits', href: '/docs/rate-limits' },
             { title: 'HTTP testing utilities', href: '/docs/http-testing' },
+            { title: 'API Builder', href: '/docs/api-builder' },
             { title: 'FAQ', href: '/docs/faq' },
         ],
     },

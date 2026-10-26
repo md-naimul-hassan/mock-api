@@ -10,6 +10,7 @@ A free, public REST API with realistic fake data for learning, prototyping, and 
 - **One error format** with stable codes and request IDs, plus per-IP rate limiting with standard headers.
 - **OpenAPI 3** at `/openapi.json` and Swagger UI at `/docs`. These are generated from the same source as the API and the website.
 - **Website:** docs with a live "Try it" panel on every endpoint, a searchable endpoint directory, and a playground with code generation for cURL, fetch, Axios, Dart (Dio and http), and Python requests.
+- **API Builder:** create your own mock APIs with custom paths, status codes, and JSON responses, then call them at `/api/v1/mock-apis/:projectId/...`.
 
 > Mock APIs is for learning and testing. Do not use it as a production backend or for real personal data, and never use the demo authentication to protect a real application.
 

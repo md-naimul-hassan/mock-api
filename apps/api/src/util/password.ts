@@ -18,3 +18,10 @@ export function verifyPassword(password: string, stored: string): boolean {
     const expected = Buffer.from(hash, 'hex');
     return candidate.length === expected.length && crypto.timingSafeEqual(candidate, expected);
 }
+
+/** Random-salt scrypt hash for real Builder accounts (not demo fixtures). */
+export function hashPasswordRandom(password: string): string {
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hash = crypto.scryptSync(password, salt, KEY_LENGTH, SCRYPT_OPTIONS).toString('hex');
+    return `scrypt$${salt}$${hash}`;
+}

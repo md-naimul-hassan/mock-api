@@ -61,6 +61,10 @@ export const ERROR_CODES = {
     REQUEST_TIMEOUT: 'REQUEST_TIMEOUT',
     SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
     INTERNAL_ERROR: 'INTERNAL_ERROR',
+    QUOTA_EXCEEDED: 'QUOTA_EXCEEDED',
 } as const;
+
+/** Public prefix for user-built mock API runtime URLs: `/api/v1/mock-apis/:projectId/...`. */
+export const MOCK_RUNTIME_PREFIX = '/api/v1/mock-apis';
 
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];

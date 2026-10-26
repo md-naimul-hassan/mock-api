@@ -13,6 +13,7 @@ const LINKS = [
     { href: '/docs', label: 'Docs', match: (path: string) => path.startsWith('/docs') && !path.startsWith('/docs/api-reference') },
     { href: '/endpoints', label: 'Endpoints', match: (path: string) => path.startsWith('/endpoints') },
     { href: '/playground', label: 'Playground', match: (path: string) => path.startsWith('/playground') },
+    { href: '/builder', label: 'API Builder', match: (path: string) => path.startsWith('/builder') },
     { href: '/docs/api-reference', label: 'API reference', match: (path: string) => path.startsWith('/docs/api-reference') },
 ];
 

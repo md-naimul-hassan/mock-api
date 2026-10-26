@@ -1,4 +1,5 @@
 import { RESOURCE_KEYS } from '@mockapis/api-spec';
+import { BuilderUser, MockEndpoint, MockProject } from '../app/modules/builder/builder.models';
 import { logger } from '../shared/logger';
 import { buildFixtures, fixtureFingerprint, toStoredUsers } from './fixtures';
 import { resourceModels, SeedMeta } from './models';
@@ -8,7 +9,7 @@ const META_ID = 'fixtures';
 
 /** Creates collections and indexes. MongoDB is schemaless, so this is the "migration" step. */
 export async function migrateDatabase() {
-    for (const model of [...Object.values(resourceModels), SeedMeta, RateLimitHit]) {
+    for (const model of [...Object.values(resourceModels), SeedMeta, RateLimitHit, BuilderUser, MockProject, MockEndpoint]) {
         await model.createCollection().catch((error: { codeName?: string }) => {
             if (error.codeName !== 'NamespaceExists') throw error;
         });

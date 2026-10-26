@@ -17,6 +17,7 @@ const COLUMNS = [
         links: [
             { href: '/endpoints', label: 'Endpoint directory' },
             { href: '/playground', label: 'Playground' },
+            { href: '/builder', label: 'API Builder' },
             { href: '/docs/http-testing', label: 'HTTP testing' },
             { href: '/docs/openapi', label: 'OpenAPI spec' },
         ],
