@@ -1,4 +1,6 @@
-# Build from the repository root: docker build -f apps/api/Dockerfile .
+# Build from the repository root:
+#   docker build -f apps/api/Dockerfile .
+# On Vercel (services + container runtime) the build context is the repo root.
 FROM node:24-alpine AS base
 RUN npm install -g pnpm@12.11.2
 WORKDIR /app
@@ -14,12 +16,14 @@ COPY apps/api apps/api
 RUN pnpm --filter @mockapis/api-spec build && pnpm --filter @mockapis/api build
 
 FROM base AS runtime
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    HOST=0.0.0.0 \
+    PORT=8080
 RUN pnpm install --frozen-lockfile --prod --filter "@mockapis/api..." && npm uninstall -g pnpm
 COPY --from=build /app/packages/api-spec/dist packages/api-spec/dist
 COPY --from=build /app/apps/api/dist apps/api/dist
 WORKDIR /app/apps/api
 USER node
-EXPOSE 4000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s CMD wget -qO- http://127.0.0.1:4000/health > /dev/null || exit 1
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s CMD wget -qO- http://127.0.0.1:${PORT:-8080}/health > /dev/null || exit 1
 CMD ["node", "dist/server.js"]

@@ -2,11 +2,9 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
     "api": {
-      "root": "apps/api",
-      "framework": "express",
-      "entrypoint": "src/app.ts",
-      "installCommand": "pnpm install --frozen-lockfile",
-      "buildCommand": "pnpm --filter @mockapis/api-spec run build"
+      "runtime": "container",
+      "root": ".",
+      "entrypoint": "apps/api/Dockerfile"
     },
     "web": {
       "root": "apps/web",
