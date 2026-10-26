@@ -5,11 +5,13 @@
       "root": "apps/api",
       "framework": "express",
       "entrypoint": "src/app.ts",
-      "buildCommand": "pnpm run build"
+      "installCommand": "pnpm install --frozen-lockfile",
+      "buildCommand": "pnpm --filter @mockapis/api-spec run build"
     },
     "web": {
       "root": "apps/web",
       "framework": "nextjs",
+      "installCommand": "pnpm install --frozen-lockfile",
       "buildCommand": "pnpm run build"
     }
   },
