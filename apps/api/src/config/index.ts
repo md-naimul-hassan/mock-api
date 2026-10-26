@@ -98,7 +98,7 @@ const config = {
     cors: {
         origins: corsOrigins.includes('*') ? ('*' as const) : corsOrigins,
     },
-    trust_proxy: parseTrustProxy(env.TRUST_PROXY),
+    trust_proxy: process.env.VERCEL ? 1 : parseTrustProxy(env.TRUST_PROXY),
     body_limit: env.BODY_LIMIT,
     request_timeout_ms: env.REQUEST_TIMEOUT_MS,
     pagination: {

@@ -23,23 +23,27 @@ export const databaseStatus = () => {
 
 export async function connectDatabase(uri: string) {
     await mongoose.connect(uri, {
-        serverSelectionTimeoutMS: 5000,
-        maxPoolSize: 20,
+        serverSelectionTimeoutMS: 8_000,
+        // Serverless / Fluid: keep the pool small; connections are reused across warm invocations.
+        maxPoolSize: process.env.VERCEL ? 5 : 20,
     });
     logger.info({ host: mongoose.connection.host, db: mongoose.connection.name }, 'MongoDB connected');
 }
 
 /** Retries the initial connection with exponential backoff so the HTTP server can start first. */
 export async function connectWithRetry(uri: string, { maxDelayMs = 30_000, onConnected }: { maxDelayMs?: number; onConnected?: () => Promise<void> } = {}) {
+    // On Vercel, fail fast inside the request instead of looping until the function times out.
+    const maxAttempts = process.env.VERCEL ? 3 : Number.POSITIVE_INFINITY;
     let delay = 1000;
-    for (;;) {
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
         try {
             await connectDatabase(uri);
             if (onConnected) await onConnected();
             return;
         } catch (error) {
-            logger.error({ err: error, retryInMs: delay }, 'MongoDB connection failed');
+            logger.error({ err: error, attempt, retryInMs: delay }, 'MongoDB connection failed');
             await mongoose.disconnect().catch(() => undefined);
+            if (attempt >= maxAttempts) throw error;
             await sleep(delay);
             delay = Math.min(delay * 2, maxDelayMs);
         }

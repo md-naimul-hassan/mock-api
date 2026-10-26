@@ -32,12 +32,16 @@ const limitHandler = (description: string) => (req: Request, _res: Response, nex
 
 /** Per-IP limiter for all public API routes plus a stricter limiter for delayed responses. */
 export function createRateLimiters(options: RateLimitOptions) {
+    // Vercel always sends Forwarded / X-Forwarded-For; trust proxy is enabled in config on Vercel.
+    const validate = process.env.VERCEL ? { xForwardedForHeader: false, forwardedHeader: false } : undefined;
+
     const general = rateLimit({
         windowMs: options.windowMs,
         limit: options.max,
         standardHeaders: 'draft-6',
         legacyHeaders: false,
         passOnStoreError: true,
+        validate,
         store: createStore(options.store, 'rl:general:'),
         handler: limitHandler(`${options.max} requests per ${options.windowMs / 1000} seconds`),
     });
@@ -48,6 +52,7 @@ export function createRateLimiters(options: RateLimitOptions) {
         standardHeaders: 'draft-6',
         legacyHeaders: false,
         passOnStoreError: true,
+        validate,
         store: createStore(options.store, 'rl:delay:'),
         skip: (req) => !hasDelay(req),
         handler: limitHandler(`${options.delayMax} delayed requests per ${options.windowMs / 1000} seconds`),

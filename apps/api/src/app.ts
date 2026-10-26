@@ -14,7 +14,7 @@ import requireJsonBody from './app/middlewares/requireJsonBody';
 import simulateDelay from './app/middlewares/simulateDelay';
 import { getOpenApiDocument, SystemController } from './app/modules/system/system.controller';
 import router from './app/routes';
-import { startRuntimeInBackground } from './runtime';
+import { ensureRuntimeReady } from './runtime';
 
 export type AppOptions = {
     rateLimit?: Partial<RateLimitOptions>;
@@ -44,6 +44,14 @@ export function createApp(options: AppOptions = {}) {
     app.disable('x-powered-by');
     app.set('trust proxy', config.trust_proxy);
     app.set('query parser', 'simple');
+
+    // On Vercel, await MongoDB inside the request so the connection isn't frozen mid-flight.
+    if (process.env.VERCEL) {
+        app.use((req: Request, _res: Response, next: NextFunction) => {
+            if (req.path === '/health') return next();
+            void ensureRuntimeReady().then(() => next()).catch(next);
+        });
+    }
 
     app.use(requestId);
     if (options.logRequests ?? !config.is_test) app.use(requestLogger);
@@ -97,10 +105,4 @@ export function createApp(options: AppOptions = {}) {
 }
 
 const app = createApp();
-
-// On Vercel the entrypoint is this module (no server.ts listen loop), so kick off MongoDB here.
-if (process.env.VERCEL) {
-    startRuntimeInBackground();
-}
-
 export default app;

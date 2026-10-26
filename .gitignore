@@ -22,3 +22,6 @@ next-env.d.ts
 
 # Local MongoDB data from `pnpm db:memory`
 .mongo-data/
+
+# Vercel CLI
+.vercel
